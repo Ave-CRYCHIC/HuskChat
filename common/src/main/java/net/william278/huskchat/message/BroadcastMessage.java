@@ -23,6 +23,7 @@ import de.themoep.minedown.adventure.MineDown;
 import de.themoep.minedown.adventure.MineDownParser;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.event.ClickEvent;
 import net.william278.huskchat.HuskChat;
 import net.william278.huskchat.config.Settings;
 import net.william278.huskchat.user.OnlineUser;
@@ -79,7 +80,8 @@ public class BroadcastMessage {
         final TextComponent.Builder componentBuilder = Component.text();
         componentBuilder.append(new MineDown(plugin.getSettings().getBroadcastCommand().getFormat()).toComponent());
         componentBuilder.append(new MineDown(message).disable(MineDownParser.Option.ADVANCED_FORMATTING).toComponent());
+        componentBuilder.appendSpace().append(Component.text("[+1]")
+                .clickEvent(ClickEvent.suggestCommand(message)));
         player.sendMessage(componentBuilder.build());
     }
-
 }

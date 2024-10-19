@@ -27,6 +27,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.event.HoverEvent;
+import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
 import net.william278.huskchat.HuskChat;
 import net.william278.huskchat.channel.Channel;
@@ -89,6 +92,7 @@ public class Locales {
 
     public void sendChannelMessage(@NotNull OnlineUser target, @NotNull OnlineUser sender, @NotNull Channel channel,
                                    @NotNull String message, @NotNull HuskChat plugin) {
+        System.out.println("sendChannelMessage: " + message);
         plugin.replacePlaceholders(sender, channel.getFormat()).thenAccept(replaced -> {
             final Component format = new MineDown(replaced).toComponent();
             final TextComponent.Builder builder = Component.text().append(format);
@@ -99,6 +103,9 @@ public class Locales {
             } else {
                 builder.append(Component.text(message).color(getFormatColor(format)));
             }
+            builder.append(Component.text(" [+1]", NamedTextColor.GRAY)
+                    .hoverEvent(HoverEvent.showText(Component.text("点我复读")))
+                    .clickEvent(ClickEvent.suggestCommand(message)));
             target.sendMessage(builder.build());
         });
     }
